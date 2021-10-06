@@ -1,10 +1,10 @@
 /*********************************************************
- *  file: Main.java
+ *  file: Program.java
  *  author: The Endermen
  *  class: CS4450.01-1 - Computer Graphics
  * 
  *  assignment: Semester Project Checkpoint 1
- *  date modified: 10/4/21
+ *  date modified: 10/6/21
  * 
  *  purpose: Demonstrate usage of a controllable camera
  *  in a 3D environment
@@ -12,13 +12,15 @@
  *********************************************************/
 
 import org.lwjgl.opengl.*;
-import org.lwjgl.util.Color;
 import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.input.Keyboard;
 import java.io.*;
+import org.lwjgl.util.glu.GLU;
 
 
 public class Program{
+    private FPCameraController fp = new FPCameraController(0f, 0f, 0f);
+    private DisplayMode displayMode;
     
     //method:  start
     //purpose: initializes the program
@@ -26,7 +28,7 @@ public class Program{
         try{
             createWindow();
             initGL();
-            render();
+            fp.gameLoop(); //render();
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -37,8 +39,15 @@ public class Program{
     private void createWindow() throws Exception{
         Display.setFullscreen(false);
         
-        Display.setDisplayMode(new DisplayMode(640, 480));
-        Display.setTitle("Semester Project by The Endermen");
+        DisplayMode d[] = Display.getAvailableDisplayModes();
+            for (int i= 0; i < d.length; i++) {
+                if (d[i].getWidth() == 640 && d[i].getHeight() == 480 && d[i].getBitsPerPixel() == 32) {
+                    displayMode = d[i];
+                    break;
+                }
+            }
+        Display.setDisplayMode(displayMode);
+        Display.setTitle("Semester Project Checkpoint 1 by The Endermen");
         Display.create();
     }
     
@@ -50,12 +59,16 @@ public class Program{
         glMatrixMode(GL_PROJECTION);            //camera
         glLoadIdentity();
         
-        glOrtho(0, 640, 0, 480, 1, -1);         //orthographic matrix
+        //glOrtho(0, 640, 0, 480, 1, -1);       //orthographic matrix
+        GLU.gluPerspective(100.0f, (float)displayMode.getWidth()/(float) displayMode.getHeight(), 0.1f, 300.0f);
         
         glMatrixMode(GL_MODELVIEW);
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-        
+        glEnable(GL_DEPTH_TEST);
     }
+    
+    /*
+    Ununsed as the camera controller renders the program instead
     
     //method:  render
     //purpose: the program loop that handles rendering, inputs, etc.
@@ -75,6 +88,8 @@ public class Program{
                         }
                 }
                 
+                createCube(100, 320, 200, 100, true);
+                
                 Display.update();
                 Display.sync(60);   //updates at 60fps
                 
@@ -82,6 +97,7 @@ public class Program{
         }
         Display.destroy();
     }
+    */
     
         
     //method:  main
