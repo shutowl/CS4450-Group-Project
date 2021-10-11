@@ -1,12 +1,12 @@
 /*********************************************************
- *  file: Program.java
+ *  file: FPCameraController.java
  *  author: The Endermen
  *  class: CS4450.01-1 - Computer Graphics
  * 
  *  assignment: Semester Project Checkpoint 1
  *  date modified: 10/6/21
  * 
- *  purpose: A class that controls the camera
+ *  purpose: A class that controls the camera (and renders the program)
  * 
  *********************************************************/
 
@@ -129,19 +129,19 @@ public class FPCameraController {
             
             // -- CONTROLS -- //
             //W = forward
-            if(Keyboard.isKeyDown(Keyboard.KEY_W)){
+            if(Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_UP)){
                 camera.walkForward(movementSpeed);
             }
             //S = backwards
-            if(Keyboard.isKeyDown(Keyboard.KEY_S)){
+            if(Keyboard.isKeyDown(Keyboard.KEY_S) || Keyboard.isKeyDown(Keyboard.KEY_DOWN)){
                 camera.walkBackwards(movementSpeed);
             }
             //A = left
-            if(Keyboard.isKeyDown(Keyboard.KEY_A)){
+            if(Keyboard.isKeyDown(Keyboard.KEY_A) || Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
                 camera.strafeLeft(movementSpeed);
             }
             //D = left
-            if(Keyboard.isKeyDown(Keyboard.KEY_D)){
+            if(Keyboard.isKeyDown(Keyboard.KEY_D) || Keyboard.isKeyDown(Keyboard.KEY_RIGHT)){
                 camera.strafeRight(movementSpeed);
             }
             //SPACE = up

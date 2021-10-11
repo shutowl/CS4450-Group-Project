@@ -1,5 +1,5 @@
 /*********************************************************
- *  file: Program.java
+ *  file: Vector3Float.java
  *  author: The Endermen
  *  class: CS4450.01-1 - Computer Graphics
  * 
