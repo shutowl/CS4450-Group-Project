@@ -3,8 +3,8 @@
  *  author: The Endermen
  *  class: CS4450.01-1 - Computer Graphics
  * 
- *  assignment: Semester Project Checkpoint 1
- *  date modified: 10/6/21
+ *  assignment: Semester Project Checkpoint 2
+ *  date modified: 10/24/21
  * 
  *  purpose: Demonstrate usage of a controllable camera
  *  in a 3D environment
@@ -19,7 +19,7 @@ import org.lwjgl.util.glu.GLU;
 
 
 public class Program{
-    private FPCameraController fp = new FPCameraController(0f, 0f, 0f);
+    private FPCameraController fp;
     private DisplayMode displayMode;
     
     //method:  start
@@ -28,6 +28,7 @@ public class Program{
         try{
             createWindow();
             initGL();
+            fp = new FPCameraController(0, 0, 0);
             fp.gameLoop(); //render();
         } catch (Exception e){
             e.printStackTrace();
@@ -64,42 +65,11 @@ public class Program{
         
         glMatrixMode(GL_MODELVIEW);
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glEnableClientState(GL_COLOR_ARRAY);
         glEnable(GL_DEPTH_TEST);
     }
-    
-    /*
-    Ununsed as the camera controller renders the program instead
-    
-    //method:  render
-    //purpose: the program loop that handles rendering, inputs, etc.
-    private void render(){
-        while(!Display.isCloseRequested()){
-            try{
-                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-                glLoadIdentity();
-                
-                //Keyboard inputs
-                while(Keyboard.next()){
-                    //Exits the program upon pressing Escape
-                    if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE)
-                        if(Keyboard.getEventKeyState()) {
-                            System.out.println("Program exited!");
-                            System.exit(0);
-                        }
-                }
-                
-                createCube(100, 320, 200, 100, true);
-                
-                Display.update();
-                Display.sync(60);   //updates at 60fps
-                
-            } catch (Exception e){}
-        }
-        Display.destroy();
-    }
-    */
-    
-        
+            
     //method:  main
     //purpose: The main method
     public static void main(String[] args){

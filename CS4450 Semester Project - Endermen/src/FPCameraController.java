@@ -3,10 +3,11 @@
  *  author: The Endermen
  *  class: CS4450.01-1 - Computer Graphics
  * 
- *  assignment: Semester Project Checkpoint 1
- *  date modified: 10/6/21
+ *  assignment: Semester Project Checkpoint 2
+ *  date modified: 10/24/21
  * 
- *  purpose: A class that controls the camera (and renders the program)
+ *  purpose: A class that controls the camera (and renders the program
+ *  through the Chunk class)
  * 
  *********************************************************/
 
@@ -19,6 +20,8 @@ import org.lwjgl.Sys;
 
 public class FPCameraController {
     
+    private Chunk chunk = new Chunk(20, -50, -70);
+    
     //store position of the camera's position
     private Vector3f position = null;
     private Vector3f lastPosition = null;
@@ -30,6 +33,7 @@ public class FPCameraController {
     
     private Vector3Float me;
     
+    //constructor
     public FPCameraController(float x, float y, float z){
         //instantiate position
         position = new Vector3f(x, y, z);
@@ -39,17 +43,20 @@ public class FPCameraController {
         lastPosition.z = 0f;
     }
     
-    //increment yaw (y-axis) rotation
+    //method:  yaw
+    //purpose: increment yaw (y-axis) rotation
     public void yaw(float amount){
         yaw += amount;
     }
     
-    //increment pitch (x-axis) rotation
+    //method:  pitch
+    //purpose: increment pitch (x-axis) rotation
     public void pitch(float amount){
         pitch -= amount;
     }
     
-    //moves the camera forward with respect to the x-axis
+    //method:  walkForward
+    //purpose: moves the camera forward with respect to the x-axis
     public void walkForward(float distance){
         float xOffset = distance * (float)Math.sin(Math.toRadians(yaw));
         float zOffset = distance * (float)Math.cos(Math.toRadians(yaw));
@@ -57,7 +64,8 @@ public class FPCameraController {
         position.z += zOffset;
     }
     
-    //moves the camera backwards with respect to the x-axis
+    //method:  walkBackwards
+    //purpose: moves the camera backwards with respect to the x-axis
     public void walkBackwards(float distance){
         float xOffset = distance * (float)Math.sin(Math.toRadians(yaw));
         float zOffset = distance * (float)Math.cos(Math.toRadians(yaw));
@@ -65,7 +73,8 @@ public class FPCameraController {
         position.z -= zOffset;
     }
     
-    //strafe the camera left with respect to the x-axis
+    //method:  strafeLeft
+    //purpose: strafe the camera left with respect to the x-axis
     public void strafeLeft(float distance){
         float xOffset = distance * (float)Math.sin(Math.toRadians(yaw-90));
         float zOffset = distance * (float)Math.cos(Math.toRadians(yaw-90));
@@ -73,7 +82,8 @@ public class FPCameraController {
         position.z += zOffset;
     }
     
-    //strafe the camera right with respect to the x-axis
+    //method:  strafeRight
+    //purpose: strafe the camera right with respect to the x-axis
     public void strafeRight(float distance){
         float xOffset = distance * (float)Math.sin(Math.toRadians(yaw+90));
         float zOffset = distance * (float)Math.cos(Math.toRadians(yaw+90));
@@ -81,17 +91,20 @@ public class FPCameraController {
         position.z += zOffset;
     }
     
-    //move the camera up
+    //method:  moveUp
+    //purpose: move the camera up
     public void moveUp(float distance){
         position.y -= distance;
     }
     
-    //move the camera down
+    //method:  moveDown
+    //purpose: move the camera down
     public void moveDown(float distance){
         position.y += distance;
     }
     
-    //translates and rotate the matrix so that it looks through the camera
+    //method:  lookThrough
+    //purpose: translates and rotate the matrix so that it looks through the camera
     public void lookThrough(){
         //rotate the pitch around the x-axis
         glRotatef(pitch, 1.0f, 0.0f, 0.0f);
@@ -101,6 +114,8 @@ public class FPCameraController {
         glTranslatef(position.x, position.y, position.z);
     }
     
+    //method: gameLoop
+    //purpose: the game loop responsible for moving the camera, controls, and rendering the program
     public void gameLoop(){
         FPCameraController camera = new FPCameraController(0, 0, 0);
         float dx = 0.0f;
@@ -152,12 +167,18 @@ public class FPCameraController {
             if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
                 camera.moveDown(movementSpeed);
             }
+            //R = refresh chunk (randomizes all cubes)
+            if(Keyboard.isKeyDown(Keyboard.KEY_R)){
+                chunk = new Chunk(20, -50, -70);
+            }
             // -- end of CONTROLS -- //
             
             glLoadIdentity();
             camera.lookThrough();
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            render();
+            
+            //Use the Chunk class's render method
+            chunk.render();
             
             Display.update();
             Display.sync(60);
@@ -165,6 +186,9 @@ public class FPCameraController {
         System.out.println("Program exited!");
         Display.destroy();
     }
+    
+    /*
+    // unused because cubes are created in the Chunk class instead
     
     private void createCube(int size, int posX, int posY, int posZ, boolean lines){
         glTranslatef(posX, posY, posZ);
@@ -261,13 +285,14 @@ public class FPCameraController {
         }
         
     }
+   
     
     private void render(){
         try{
            createCube(3, 0, -5, -10, false);
         }catch(Exception e){}
     }
-    
+    */
     
     
     
