@@ -32,6 +32,12 @@ public class Chunk {
     private int VBOTextureHandle;
     private Texture texture;
     
+    //noise generation variables
+    private int seed;
+    private int heightOffset = 5;      //adjusts the offset at which the chunk starts noise height
+    private int maxHeight = 100;        //controls how tall terrain can get. higher value = taller terrain
+    private double persistance = 0.1;   //controls noise height variation. lower value = flatter terrain
+    
     //method:  render
     //purpose: The render method responsible for rendering the program
     public void render(){
@@ -58,11 +64,19 @@ public class Chunk {
         FloatBuffer VertexColorData = BufferUtils.createFloatBuffer((CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE) * 6 * 12);
         FloatBuffer VertexTextureData = BufferUtils.createFloatBuffer((CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE) * 6 * 12);
                 
-        SimplexNoise noise = new SimplexNoise(5, 0.25, 1);
-        
+        SimplexNoise noise = new SimplexNoise(maxHeight, persistance, seed);
+        float max = CHUNK_SIZE;
+                
         for(float x = 0; x < CHUNK_SIZE; x++){
             for(float z = 0; z < CHUNK_SIZE; z++){
-                for(float y = 0; y < CHUNK_SIZE; y++){
+                
+                //noise height generation
+                float height = heightOffset + Math.abs(100 * (float)noise.getNoise((int)x, (int)z));
+                //prevent going above chunk height
+                if(height > CHUNK_SIZE)
+                    height = CHUNK_SIZE;
+                
+                for(float y = 0; y < height; y++){
                     VertexPositionData.put(createCube((float)(startX + x * CUBE_LENGTH), 
                                                       (float)(startY + y * CUBE_LENGTH + (int)(CHUNK_SIZE * 0.8)), 
                                                       (float)(startZ + z * CUBE_LENGTH)));
@@ -232,71 +246,71 @@ public class Chunk {
                 x + offset * 2, y + offset * 1,
                 x + offset * 3, y + offset * 1,
                 };
-            case 2: //TNT
+            case 2: //water
                 return new float[] {
                 //Top
-                x + offset * 10, y + offset * 1,
-                x + offset * 9,  y + offset * 1,
-                x + offset * 9,  y + offset * 0,
-                x + offset * 10, y + offset * 0,
+                x + offset * 15, y + offset * 1,
+                x + offset * 14, y + offset * 1,
+                x + offset * 14, y + offset * 0,
+                x + offset * 15, y + offset * 0,
                 //Bottom
-                x + offset * 11, y + offset * 1,
-                x + offset * 10, y + offset * 1,
-                x + offset * 10, y + offset * 0,
-                x + offset * 11, y + offset * 0,
+                x + offset * 15, y + offset * 1,
+                x + offset * 14, y + offset * 1,
+                x + offset * 14, y + offset * 0,
+                x + offset * 15, y + offset * 0,
                 //Front
-                x + offset * 8, y + offset * 0,
-                x + offset * 9, y + offset * 0,
-                x + offset * 9, y + offset * 1,
-                x + offset * 8, y + offset * 1,
+                x + offset * 14, y + offset * 0,
+                x + offset * 15, y + offset * 0,
+                x + offset * 15, y + offset * 1,
+                x + offset * 14, y + offset * 1,
                 //Back
-                x + offset * 9, y + offset * 1,
-                x + offset * 8, y + offset * 1,
-                x + offset * 8, y + offset * 0,
-                x + offset * 9, y + offset * 0,
+                x + offset * 15, y + offset * 1,
+                x + offset * 14, y + offset * 1,
+                x + offset * 14, y + offset * 0,
+                x + offset * 15, y + offset * 0,
                 //Left
-                x + offset * 8, y + offset * 0,
-                x + offset * 9, y + offset * 0,
-                x + offset * 9, y + offset * 1,
-                x + offset * 8, y + offset * 1,
+                x + offset * 14, y + offset * 0,
+                x + offset * 15, y + offset * 0,
+                x + offset * 15, y + offset * 1,
+                x + offset * 14, y + offset * 1,
                 //Right
-                x + offset * 8, y + offset * 0,
-                x + offset * 9, y + offset * 0,
-                x + offset * 9, y + offset * 1,
-                x + offset * 8, y + offset * 1,
+                x + offset * 14, y + offset * 0,
+                x + offset * 15, y + offset * 0,
+                x + offset * 15, y + offset * 1,
+                x + offset * 15, y + offset * 1,
                 };
-            case 3: //soul sand
+            case 3: //dirt
                 return new float[] {
                 //Top
-                x + offset * 9, y + offset * 7,
-                x + offset * 8, y + offset * 7,
-                x + offset * 8, y + offset * 6,
-                x + offset * 9, y + offset * 6,
+                x + offset * 3, y + offset * 1,
+                x + offset * 2, y + offset * 1,
+                x + offset * 2, y + offset * 0,
+                x + offset * 3, y + offset * 0,
                 //Bottom
-                x + offset * 9, y + offset * 7,
-                x + offset * 8, y + offset * 7,
-                x + offset * 8, y + offset * 6,
-                x + offset * 9, y + offset * 6,
+                x + offset * 3, y + offset * 1,
+                x + offset * 2, y + offset * 1,
+                x + offset * 2, y + offset * 0,
+                x + offset * 3, y + offset * 0,
                 //Front
-                x + offset * 8, y + offset * 6,
-                x + offset * 9, y + offset * 6,
-                x + offset * 9, y + offset * 7,
-                x + offset * 8, y + offset * 7,
+                x + offset * 2, y + offset * 0,
+                x + offset * 3, y + offset * 0,
+                x + offset * 3, y + offset * 1,
+                x + offset * 2, y + offset * 1,
                 //Back
-                x + offset * 9, y + offset * 7,
-                x + offset * 8, y + offset * 7,
-                x + offset * 9, y + offset * 6,
-                x + offset * 8, y + offset * 6,
+                x + offset * 3, y + offset * 1,
+                x + offset * 2, y + offset * 1,
+                x + offset * 2, y + offset * 0,
+                x + offset * 3, y + offset * 0,
                 //Left
-                x + offset * 8, y + offset * 6,
-                x + offset * 9, y + offset * 6,
-                x + offset * 9, y + offset * 7,
-                x + offset * 8, y + offset * 7,
+                x + offset * 2, y + offset * 0,
+                x + offset * 3, y + offset * 0,
+                x + offset * 3, y + offset * 1,
+                x + offset * 2, y + offset * 1,
                 //Right
-                x + offset * 8, y + offset * 6,
-                x + offset * 9, y + offset * 6,
-                x + offset * 9, y + offset * 7,
-                x + offset * 8, y + offset * 7,
+                x + offset * 2, y + offset * 0,
+                x + offset * 3, y + offset * 0,
+                x + offset * 3, y + offset * 1,
+                x + offset * 3, y + offset * 1,
                 };
             case 4: //stone
                 return new float[] {
@@ -380,6 +394,8 @@ public class Chunk {
         
         r = new Random();
         blocks = new Block[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
+        seed = Math.abs(r.nextInt());
+        System.out.println("Seed: " + seed);
         
         for(int x = 0; x < CHUNK_SIZE; x++){
             for(int y = 0; y < CHUNK_SIZE; y++){
@@ -388,10 +404,10 @@ public class Chunk {
                         blocks[x][y][z] = new Block(Block.BlockType.Grass);
                     }
                     else if(r.nextFloat () > 0.6f){
-                        blocks[x][y][z] = new Block(Block.BlockType.SoulSand);
+                        blocks[x][y][z] = new Block(Block.BlockType.Water);
                     }
                     else if(r.nextFloat () > 0.5f){
-                        blocks[x][y][z] = new Block(Block.BlockType.TNT);
+                        blocks[x][y][z] = new Block(Block.BlockType.Dirt);
                     }
                     else if(r.nextFloat () > 0.4f){
                         blocks[x][y][z] = new Block(Block.BlockType.Stone);

@@ -19,8 +19,8 @@ public class Block {
     public enum BlockType {
         Grass(0),
         Sand(1),
-        TNT(2),
-        SoulSand(3),
+        Water(2),
+        Dirt(3),
         Stone(4),
         Bedrock(5);
         

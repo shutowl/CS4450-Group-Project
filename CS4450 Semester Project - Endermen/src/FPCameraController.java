@@ -167,9 +167,11 @@ public class FPCameraController {
             if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
                 camera.moveDown(movementSpeed);
             }
-            //R = refresh chunk (randomizes all cubes)
-            if(Keyboard.isKeyDown(Keyboard.KEY_R)){
-                chunk = new Chunk(20, -50, -70);
+            //R = refresh chunk (randomizes all cube textures and the noise generation seed)
+            while(Keyboard.next()){
+                if(Keyboard.isKeyDown(Keyboard.KEY_R)){
+                    chunk = new Chunk(20, -50, -70);
+                }
             }
             // -- end of CONTROLS -- //
             
