@@ -3,8 +3,8 @@
  *  author: The Endermen
  *  class: CS4450.01-1 - Computer Graphics
  * 
- *  assignment: Semester Project Checkpoint 2
- *  date modified: 10/24/21
+ *  assignment: Semester Project Checkpoint 3
+ *  date modified: 11/10/21
  * 
  *  purpose: Demonstrate usage of a controllable camera
  *  in a 3D environment
@@ -16,11 +16,16 @@ import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.input.Keyboard;
 import java.io.*;
 import org.lwjgl.util.glu.GLU;
+import java.nio.FloatBuffer;
+import org.lwjgl.BufferUtils;
 
 
 public class Program{
     private FPCameraController fp;
     private DisplayMode displayMode;
+    
+    private FloatBuffer lightPosition;
+    private FloatBuffer whiteLight;
     
     //method:  start
     //purpose: initializes the program
@@ -48,7 +53,7 @@ public class Program{
                 }
             }
         Display.setDisplayMode(displayMode);
-        Display.setTitle("Semester Project Checkpoint 1 by The Endermen");
+        Display.setTitle("Semester Project Checkpoint 2 by The Endermen");
         Display.create();
     }
     
@@ -70,6 +75,16 @@ public class Program{
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_TEXTURE_2D);
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        
+        //lighting
+        initLightArrays();
+        glLight(GL_LIGHT0, GL_POSITION, lightPosition); //light position
+        glLight(GL_LIGHT0, GL_SPECULAR, whiteLight);    //specular light
+        glLight(GL_LIGHT0, GL_DIFFUSE, whiteLight);     //diffuse light
+        glLight(GL_LIGHT0, GL_AMBIENT, whiteLight);     //ambient light
+        
+        glEnable(GL_LIGHTING);  //enable lighting
+        glEnable(GL_LIGHT0);    //enable light0
     }
             
     //method:  main
@@ -80,5 +95,15 @@ public class Program{
         Program program = new Program();
         program.start();
 
+    }
+    
+    //method:  initLightArrays
+    //purpose: initialize lighting values
+    private void initLightArrays(){
+        lightPosition = BufferUtils.createFloatBuffer(4);
+        lightPosition.put(0.0f).put(0.0f).put(0.0f).put(1.0f).flip();
+        
+        whiteLight = BufferUtils.createFloatBuffer(4);
+        whiteLight.put(1.0f).put(1.0f).put(1.0f).put(0.0f).flip();
     }
 }

@@ -3,7 +3,7 @@
  *  author: The Endermen
  *  class: CS4450.01-1 - Computer Graphics
  * 
- *  assignment: Semester Project Checkpoint 1
+ *  assignment: Semester Project Checkpoint 2
  *  date modified: 10/6/21
  * 
  *  purpose: A class that stores a Vector3FLoat
