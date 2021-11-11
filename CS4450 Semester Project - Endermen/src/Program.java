@@ -53,7 +53,7 @@ public class Program{
                 }
             }
         Display.setDisplayMode(displayMode);
-        Display.setTitle("Semester Project Checkpoint 2 by The Endermen");
+        Display.setTitle("Semester Project Checkpoint 3 by The Endermen");
         Display.create();
     }
     

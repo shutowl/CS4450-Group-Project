@@ -410,19 +410,19 @@ public class Chunk {
                     }
                     //Middle layer
                     else if(y < height-1){
-                        if(r.nextFloat() > 0.5f)
-                            blocks[x][y][z] = new Block(Block.BlockType.Stone);
-                        else
+                        if(y > height - 3)
                             blocks[x][y][z] = new Block(Block.BlockType.Dirt);
+                        else
+                            blocks[x][y][z] = new Block(Block.BlockType.Stone);
                     }
                     //Top layer
                     else{
-                        if(y < 7)   //create lakes or rivers
+                        if(y < 7)           //create lakes or rivers
                             blocks[x][y][z] = new Block(Block.BlockType.Water);
-                        else if(r.nextFloat() > 0.5f)
-                            blocks[x][y][z] = new Block(Block.BlockType.Grass);
-                        else
+                        else if(y < 8)      //sand appears next to water
                             blocks[x][y][z] = new Block(Block.BlockType.Sand);
+                        else
+                            blocks[x][y][z] = new Block(Block.BlockType.Grass);
                     }
                 }
             }
