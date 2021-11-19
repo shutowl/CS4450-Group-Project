@@ -3,8 +3,8 @@
  *  author: The Endermen
  *  class: CS4450.01-1 - Computer Graphics
  * 
- *  assignment: Semester Project Checkpoint 3
- *  date modified: 11/10/21
+ *  assignment: Semester Project Final Checkpoint
+ *  date modified: 11/18/21
  * 
  *  purpose: A class that stores information of a Block
  * 

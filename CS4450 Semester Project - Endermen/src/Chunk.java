@@ -3,8 +3,8 @@
  *  author: The Endermen
  *  class: CS4450.01-1 - Computer Graphics
  * 
- *  assignment: Semester Project Checkpoint 3
- *  date modified: 11/10/21
+ *  assignment: Semester Project Final Checkpoint
+ *  date modified: 11/18/21
  * 
  *  purpose: A class that stores information of a Chunk
  * 
@@ -383,6 +383,11 @@ public class Chunk {
         
     }
     
+    //Get chunk coordinates
+    public int getX(){return startX;}
+    public int getY(){return startY;}
+    public int getZ(){return startZ;}
+    
     //constructor
     public Chunk(int startX, int startY, int startZ){
         try{
@@ -409,7 +414,7 @@ public class Chunk {
                         blocks[x][y][z] = new Block(Block.BlockType.Bedrock);
                     }
                     //Middle layer
-                    else if(y < height-1){
+                    else if(y < height - 1){
                         if(y > height - 3)
                             blocks[x][y][z] = new Block(Block.BlockType.Dirt);
                         else

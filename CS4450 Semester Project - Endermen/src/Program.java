@@ -3,8 +3,8 @@
  *  author: The Endermen
  *  class: CS4450.01-1 - Computer Graphics
  * 
- *  assignment: Semester Project Checkpoint 3
- *  date modified: 11/10/21
+ *  assignment: Semester Project Final Checkpoint
+ *  date modified: 11/18/21
  * 
  *  purpose: Demonstrate usage of a controllable camera
  *  in a 3D environment
@@ -53,7 +53,7 @@ public class Program{
                 }
             }
         Display.setDisplayMode(displayMode);
-        Display.setTitle("Semester Project Checkpoint 3 by The Endermen");
+        Display.setTitle("Semester Project Final Checkpoint by The Endermen");
         Display.create();
     }
     

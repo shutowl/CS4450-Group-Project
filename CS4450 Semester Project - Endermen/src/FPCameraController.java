@@ -3,8 +3,8 @@
  *  author: The Endermen
  *  class: CS4450.01-1 - Computer Graphics
  * 
- *  assignment: Semester Project Checkpoint 3
- *  date modified: 11/10/21
+ *  assignment: Semester Project Final Checkpoint
+ *  date modified: 11/18/21
  * 
  *  purpose: A class that controls the camera (and renders the program
  *  through the Chunk class)
@@ -33,6 +33,12 @@ public class FPCameraController {
     //x-axis rotation
     private float pitch = 0.0f;
     
+    //Daylight cycle variables
+    private float sunSpeed = 2.0f;
+    private float sunRadius = 600f;
+    Vector3Float sunStartPos = new Vector3Float(chunk.getX()-(int)sunRadius, chunk.getY()+60, chunk.getZ()+100);    //sun spawn position
+    Vector3Float sunPos = new Vector3Float((int)sunStartPos.x, (int)sunStartPos.y, (int)sunStartPos.z);             //current position
+    
     private Vector3Float me;
     
     //constructor
@@ -40,9 +46,9 @@ public class FPCameraController {
         //instantiate position
         position = new Vector3f(x, y, z);
         lastPosition = new Vector3f(x, y, z);
-        lastPosition.x = 0f;
-        lastPosition.y = 15f;
-        lastPosition.z = 0f;
+        //lastPosition.x = 0f;
+        //lastPosition.y = 15f;
+        //lastPosition.z = 0f;
     }
     
     //method:  yaw
@@ -139,7 +145,7 @@ public class FPCameraController {
     //method: gameLoop
     //purpose: the game loop responsible for moving the camera, controls, and rendering the program
     public void gameLoop(){
-        FPCameraController camera = new FPCameraController(0, 0, 0);
+        FPCameraController camera = new FPCameraController(position.x, position.y, position.z);
         float dx = 0.0f;
         float dy = 0.0f;
         float dt = 0.0f;        //time between frames
@@ -189,10 +195,27 @@ public class FPCameraController {
             if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
                 camera.moveDown(movementSpeed);
             }
-            //R = refresh chunk (randomizes all cube textures and the noise generation seed)
             while(Keyboard.next()){
-                if(Keyboard.isKeyDown(Keyboard.KEY_R)){
-                    chunk = new Chunk(20, -50, -70);
+                //R = refresh chunk (randomizes the noise generation seed)
+                if(Keyboard.getEventKey() == (Keyboard.KEY_R)){
+                    if(!Keyboard.getEventKeyState()){
+                        System.out.print("Chunk reloaded. ");
+                        chunk = new Chunk(chunk.getX(), chunk.getY(), chunk.getZ());
+                    }
+                }
+                //Q = decrease sun speed
+                if(Keyboard.getEventKey() == (Keyboard.KEY_Q)){
+                    if(!Keyboard.getEventKeyState()){
+                        sunSpeed -= 0.5f;
+                        System.out.println("Decreased sun speed. Current speed: " + sunSpeed);
+                    }
+                }
+                //E = increase sun speed
+                if(Keyboard.getEventKey() == (Keyboard.KEY_E)){
+                    if(!Keyboard.getEventKeyState()){
+                        sunSpeed += 0.5f;
+                        System.out.println("Increased sun speed. Current speed: " + sunSpeed);
+                    }
                 }
             }
             // -- end of CONTROLS -- //
@@ -200,6 +223,19 @@ public class FPCameraController {
             glLoadIdentity();
             camera.lookThrough();
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            
+            //Daylight cycle
+            FloatBuffer lightPosition = BufferUtils.createFloatBuffer(4);
+            lightPosition.put(sunPos.x += sunSpeed).put(sunPos.y).put(sunPos.z).put(1.0f).flip();
+            glLight(GL_LIGHT0, GL_POSITION, lightPosition);
+
+            if(sunPos.x > sunRadius + chunk.getX()){
+                sunPos.x = sunStartPos.x;
+            }
+            
+            //System.out.println("Sun position: (" + sunPos.x + ", " + sunPos.y + ", " + sunPos.z + ")");   //Print the "sun's" location to consol
+            createCube(4, (int)sunPos.x, (int)sunPos.y, (int)sunPos.z, false, new Vector3Float(1,1,0));     //Visually tracks where the "sun" is
+            
             
             //Use the Chunk class's render method
             chunk.render();
@@ -211,46 +247,46 @@ public class FPCameraController {
         Display.destroy();
     }
     
-    /*
-    // unused because cubes are created in the Chunk class instead
-    
-    private void createCube(int size, int posX, int posY, int posZ, boolean lines){
+    //method:  createCube
+    //purpose: Creates a cube in the program
+    private void createCube(int size, int posX, int posY, int posZ, boolean lines, Vector3Float color){
+        glPushMatrix();
         glTranslatef(posX, posY, posZ);
-
+        
         if(!lines){
             glBegin(GL_QUADS);
                 //Quad 1 (Top)
-                glColor3f(0.0f, 0.0f, 1.0f);    //blue  
+                glColor3f(color.x, color.y, color.z);
                     glVertex3f(size, size, -size);
                     glVertex3f(-size, size, -size);
                     glVertex3f(-size, size, size);
                     glVertex3f(size, size, size);
                 //Quad 2 (Bottom)
-                glColor3f(1.0f, 0.0f, 0.0f);    //red
+                glColor3f(color.x, color.y, color.z);
                     glVertex3f(size, -size, size);
                     glVertex3f(-size, -size, size);
                     glVertex3f(-size, -size, -size);
                     glVertex3f(size, -size, -size);
                 //Quad 3 (Front)
-                glColor3f(0.0f, 1.0f, 1.0f);    //cyan
+                glColor3f(color.x, color.y, color.z);
                     glVertex3f(size, size, size);
                     glVertex3f(-size, size, size);
                     glVertex3f(-size, -size, size);
                     glVertex3f(size, -size, size);
                 //Quad 4 (Back)
-                glColor3f(0.0f, 1.0f, 0.0f);    //green
+                glColor3f(color.x, color.y, color.z);
                     glVertex3f(size, -size, -size);
                     glVertex3f(-size, -size, -size);
                     glVertex3f(-size, size, -size);
                     glVertex3f(size, size, -size);
                 //Quad 5 (Left)
-                glColor3f(1.0f, 1.0f, 0.0f);    //yellow
+                glColor3f(color.x, color.y, color.z);
                     glVertex3f(-size, size, size);
                     glVertex3f(-size, size, -size);
                     glVertex3f(-size, -size, -size);
                     glVertex3f(-size, -size, size);
                 //Quad 6 (Right)
-                glColor3f(1.0f, 0.0f, 1.0f);    //magenta
+                glColor3f(color.x, color.y, color.z);
                     glVertex3f(size, size, -size);
                     glVertex3f(size, size, size);
                     glVertex3f(size, -size, size);
@@ -260,7 +296,7 @@ public class FPCameraController {
         else{   //only show outer lines (the mesh)
             glBegin(GL_LINE_LOOP);
                 //Quad 1 (Top)
-                glColor3f(0.0f, 0.0f, 1.0f);    //blue  
+                glColor3f(color.x, color.y, color.z);
                     glVertex3f(size, size, -size);
                     glVertex3f(-size, size, -size);
                     glVertex3f(-size, size, size);
@@ -268,7 +304,7 @@ public class FPCameraController {
             glEnd();
             glBegin(GL_LINE_LOOP);
                 //Quad 2 (Bottom)
-                glColor3f(1.0f, 0.0f, 0.0f);    //red
+                glColor3f(color.x, color.y, color.z);
                     glVertex3f(size, -size, size);
                     glVertex3f(-size, -size, size);
                     glVertex3f(-size, -size, -size);
@@ -276,7 +312,7 @@ public class FPCameraController {
             glEnd();
             glBegin(GL_LINE_LOOP);
                 //Quad 3 (Front)
-                glColor3f(0.0f, 1.0f, 1.0f);    //cyan
+                glColor3f(color.x, color.y, color.z);
                     glVertex3f(size, size, size);
                     glVertex3f(-size, size, size);
                     glVertex3f(-size, -size, size);
@@ -284,7 +320,7 @@ public class FPCameraController {
             glEnd();
             glBegin(GL_LINE_LOOP);
                 //Quad 4 (Back)
-                glColor3f(0.0f, 1.0f, 0.0f);    //green
+                glColor3f(color.x, color.y, color.z);
                     glVertex3f(size, -size, -size);
                     glVertex3f(-size, -size, -size);
                     glVertex3f(-size, size, -size);
@@ -292,7 +328,7 @@ public class FPCameraController {
             glEnd();
             glBegin(GL_LINE_LOOP);
                 //Quad 5 (Left)
-                glColor3f(1.0f, 1.0f, 0.0f);    //yellow
+                glColor3f(color.x, color.y, color.z);
                     glVertex3f(-size, size, size);
                     glVertex3f(-size, size, -size);
                     glVertex3f(-size, -size, -size);
@@ -300,17 +336,18 @@ public class FPCameraController {
             glEnd();
             glBegin(GL_LINE_LOOP);
                 //Quad 6 (Right)
-                glColor3f(1.0f, 0.0f, 1.0f);    //magenta
+                glColor3f(color.x, color.y, color.z);
                     glVertex3f(size, size, -size);
                     glVertex3f(size, size, size);
                     glVertex3f(size, -size, size);
                     glVertex3f(size, -size, -size);    
             glEnd();
         }
+        glPopMatrix();
         
     }
    
-    
+    /*
     private void render(){
         try{
            createCube(3, 0, -5, -10, false);
