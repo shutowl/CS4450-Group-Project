@@ -22,7 +22,11 @@ public class Block {
         Water(2),
         Dirt(3),
         Stone(4),
-        Bedrock(5);
+        Bedrock(5),
+        Melon(6),
+        Pumpkin(7),
+        Air(8),
+        LongGrass(9);
         
         private int BlockID;
         

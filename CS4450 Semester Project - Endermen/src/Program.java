@@ -72,6 +72,8 @@ public class Program{
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_COLOR_ARRAY);
+        glEnable(GL_ALPHA_TEST);
+        glAlphaFunc(GL_GEQUAL, 1.0f);
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_TEXTURE_2D);
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);

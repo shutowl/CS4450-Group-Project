@@ -29,6 +29,8 @@ public class Chunk {
     private int startX, startY, startZ;
     private Random r;
     
+    
+    
     private int VBOTextureHandle;
     private Texture texture;
     
@@ -377,6 +379,138 @@ public class Chunk {
                 x + offset * 2, y + offset * 2,
                 x + offset * 1, y + offset * 2,
                 };
+            case 6: //melon
+                return new float[] {
+                //Top
+                x + offset * 10, y + offset * 9,
+                x + offset * 9, y + offset * 9,
+                x + offset * 9, y + offset * 8,
+                x + offset * 10, y + offset * 8,
+                //Bottom
+                x + offset * 10, y + offset * 9,
+                x + offset * 9, y + offset * 9,
+                x + offset * 9, y + offset * 8,
+                x + offset * 10, y + offset * 8,
+                //Front
+                x + offset * 8, y + offset * 8,
+                x + offset * 9, y + offset * 8,
+                x + offset * 9, y + offset * 9,
+                x + offset * 8, y + offset * 9,
+                //Back
+                x + offset * 9, y + offset * 9,
+                x + offset * 8, y + offset * 9,
+                x + offset * 8, y + offset * 8,
+                x + offset * 9, y + offset * 8,
+                //Left
+                x + offset * 8, y + offset * 8,
+                x + offset * 9, y + offset * 8,
+                x + offset * 9, y + offset * 9,
+                x + offset * 8, y + offset * 9,
+                //Right
+                x + offset * 8, y + offset * 8,
+                x + offset * 9, y + offset * 8,
+                x + offset * 9, y + offset * 9,
+                x + offset * 8, y + offset * 9,
+                };
+            case 7: //Pumpkin
+                return new float[] {
+                //Top
+                x + offset * 7, y + offset * 7,
+                x + offset * 6, y + offset * 7,
+                x + offset * 6, y + offset * 6,
+                x + offset * 7, y + offset * 6,
+                //Bottom
+                x + offset * 7, y + offset * 7,
+                x + offset * 6, y + offset * 7,
+                x + offset * 6, y + offset * 6,
+                x + offset * 7, y + offset * 6,
+                //Front
+                x + offset * 6, y + offset * 7,
+                x + offset * 7, y + offset * 7,
+                x + offset * 7, y + offset * 8,
+                x + offset * 6, y + offset * 8,
+                //Back
+                x + offset * 7, y + offset * 8,
+                x + offset * 6, y + offset * 8,
+                x + offset * 6, y + offset * 7,
+                x + offset * 7, y + offset * 7,
+                //Left
+                x + offset * 6, y + offset * 7,
+                x + offset * 7, y + offset * 7,
+                x + offset * 7, y + offset * 8,
+                x + offset * 6, y + offset * 8,
+                //Right
+                x + offset * 6, y + offset * 7,
+                x + offset * 7, y + offset * 7,
+                x + offset * 7, y + offset * 8,
+                x + offset * 6, y + offset * 8,
+                };
+            case 8: //Air
+                return new float[] {
+                //Top
+                x + offset * 5, y + offset * 12,
+                x + offset * 4, y + offset * 12,
+                x + offset * 4, y + offset * 11,
+                x + offset * 5, y + offset * 11,
+                //Bottom
+                x + offset * 5, y + offset * 12,
+                x + offset * 4, y + offset * 12,
+                x + offset * 4, y + offset * 11,
+                x + offset * 5, y + offset * 11,
+                //Front
+                x + offset * 4, y + offset * 11,
+                x + offset * 5, y + offset * 11,
+                x + offset * 5, y + offset * 12,
+                x + offset * 4, y + offset * 12,
+                //Back
+                x + offset * 5, y + offset * 12,
+                x + offset * 4, y + offset * 12,
+                x + offset * 4, y + offset * 11,
+                x + offset * 5, y + offset * 11,
+                //Left
+                x + offset * 4, y + offset * 11,
+                x + offset * 5, y + offset * 11,
+                x + offset * 5, y + offset * 12,
+                x + offset * 4, y + offset * 12,
+                //Right
+                x + offset * 4, y + offset * 11,
+                x + offset * 5, y + offset * 11,
+                x + offset * 5, y + offset * 12,
+                x + offset * 4, y + offset * 12,
+                };
+            case 9: //LongGrass
+                return new float[] {
+                //Top
+                x + offset * 5, y + offset * 12,
+                x + offset * 4, y + offset * 12,
+                x + offset * 4, y + offset * 11,
+                x + offset * 5, y + offset * 11,
+                //Bottom
+                x + offset * 5, y + offset * 12,
+                x + offset * 4, y + offset * 12,
+                x + offset * 4, y + offset * 11,
+                x + offset * 5, y + offset * 11,
+                //Front
+                x + offset * 13, y + offset * 5,
+                x + offset * 14, y + offset * 5,
+                x + offset * 14, y + offset * 6,
+                x + offset * 13, y + offset * 6,
+                //Back
+                x + offset * 14, y + offset * 6,
+                x + offset * 13, y + offset * 6,
+                x + offset * 13, y + offset * 5,
+                x + offset * 14, y + offset * 5,
+                //Left
+                x + offset * 13, y + offset * 5,
+                x + offset * 14, y + offset * 5,
+                x + offset * 14, y + offset * 6,
+                x + offset * 13, y + offset * 6,
+                //Right
+                x + offset * 13, y + offset * 5,
+                x + offset * 14, y + offset * 5,
+                x + offset * 14, y + offset * 6,
+                x + offset * 13, y + offset * 6,
+                };
             default:
                 return new float[]{1, 1, 1};
         }
@@ -414,20 +548,34 @@ public class Chunk {
                         blocks[x][y][z] = new Block(Block.BlockType.Bedrock);
                     }
                     //Middle layer
-                    else if(y < height - 1){
-                        if(y > height - 3)
+                    else if(y < height - 2){
+                        if(y > height - 4)
                             blocks[x][y][z] = new Block(Block.BlockType.Dirt);
                         else
                             blocks[x][y][z] = new Block(Block.BlockType.Stone);
                     }
                     //Top layer
-                    else{
+                    else if(y < height - 1){
                         if(y < 7)           //create lakes or rivers
                             blocks[x][y][z] = new Block(Block.BlockType.Water);
-                        else if(y < 8)      //sand appears next to water
+                        else if(y < 8){      //sand appears next to water
                             blocks[x][y][z] = new Block(Block.BlockType.Sand);
+                        }
                         else
-                            blocks[x][y][z] = new Block(Block.BlockType.Grass);
+                            blocks[x][y][z] = new Block(Block.BlockType.Grass);  
+                    }
+                    //Foliage Layer
+                    else{ 
+                        if(r.nextFloat() >= 0.03f || y < 8)
+                            blocks[x][y][z] = new Block(Block.BlockType.Air);
+                        else if(r.nextFloat() >= 0.5f)
+                            blocks[x][y][z] = new Block(Block.BlockType.LongGrass);
+                        else if(r.nextFloat() >= 0.7f)
+                            blocks[x][y][z] = new Block(Block.BlockType.Melon);
+                        else
+                            blocks[x][y][z] = new Block(Block.BlockType.Pumpkin);
+                            
+                  
                     }
                 }
             }
@@ -443,4 +591,5 @@ public class Chunk {
         rebuildMesh(startX, startY, startZ);
 
     }
+   
 }
